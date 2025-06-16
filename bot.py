@@ -56,13 +56,17 @@ async def protocol_wireguard(message: types.Message):
 
 
 @dp.callback_query(F.data == 'vless')
-async def protocol_vless(message: types.Message):
-    inbound = service.get_least_clients_inbound('vless')
-    name = message.from_user.username or message.from_user.first_name or message.from_user.last_name or message.chat.id
-    result = service.add_client(inbound['id'], name)
-    format_result = service.format_vless_url(result, inbound, HOST, inbound['port'])
-    logger.info(f'Получен vless config {message.message.chat.id}, {name}, {format_result}')
-    await bot.send_message(message.message.chat.id, f'`{format_result}`', parse_mode='markdown')
+async def protocol_vless(callback: types.CallbackQuery):
+    try:
+        inbound = service.get_least_clients_inbound('vless')
+        name = callback.from_user.username or callback.from_user.first_name or callback.from_user.last_name or callback.from_user.id
+        client_info, result = service.add_client(inbound['id'], name)
+        format_result = service.format_vless_url(client_info, inbound, HOST, inbound['port'])
+        await bot.send_message(callback.message.chat.id, f'`{format_result}`', parse_mode='markdown')
+        logger.info(f"VLESS URL отправлен пользователю {callback.from_user.id}")
+    except Exception as e:
+        logger.error(f"Ошибка при обработке vless: {e}")
+        await callback.message.answer("Произошла ошибка при обработке вашего запроса.")
 
 
 async def main():
