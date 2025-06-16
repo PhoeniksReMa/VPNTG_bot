@@ -255,7 +255,7 @@ class XUIService:
         query = "&".join(f"{k}={v}" for k, v in params.items())
 
         # Якорь — по email или по remark
-        remark = client_info.get("email", "")
+        remark = client_info['email']
 
         # Составляем итоговую ссылку
         return f"vless://{client_info['id']}@{host}:{port}?{query}#{remark}"
