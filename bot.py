@@ -10,11 +10,10 @@ from dotenv import load_dotenv
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,  # INFO или DEBUG для более подробных логов
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     handlers=[
-        logging.StreamHandler(),  # выводит логи в консоль
-        logging.FileHandler("bot.log", encoding="utf-8")  # сохраняет логи в файл
+        logging.StreamHandler(),  # единственный источник логов
     ]
 )
 
