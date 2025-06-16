@@ -59,7 +59,7 @@ async def protocol_vless(callback: types.CallbackQuery):
     try:
         inbound = service.get_least_clients_inbound('vless')
         name = callback.from_user.username or callback.from_user.first_name or callback.from_user.last_name or callback.from_user.id
-        client_info, result = service.add_client(inbound['id'], name)
+        client_info = service.add_client(inbound['id'], name)
         format_result = service.format_vless_url(client_info, inbound, HOST, inbound['port'])
         await bot.send_message(callback.message.chat.id, f'`{format_result}`', parse_mode='markdown')
         logger.info(f"VLESS URL отправлен пользователю {callback.from_user.id}")

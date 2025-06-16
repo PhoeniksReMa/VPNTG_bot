@@ -160,7 +160,7 @@ class XUIService:
                     return inbound["id"], client
         return None
 
-    def add_client(self, inbound_id: int, email: str) -> (dict, dict):
+    def add_client(self, inbound_id: int, email: str) -> dict:
         """
         Add a new client to the specified inbound.
         Returns a tuple of (client_info, api_response).
@@ -189,10 +189,10 @@ class XUIService:
             result = resp.json()
             if not result.get("success"):
                 raise Exception(f"Add client failed: {result.get('msg')}")
-            return client, result
+            return client
         except Exception as e:
-            existing= self.get_client_config_by_email(email, protocol='vless')
-            return existing
+            client = self.get_client_config_by_email(email, protocol='vless')
+            return client
 
 
 
